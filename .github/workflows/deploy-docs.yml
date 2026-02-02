@@ -1,24 +1,17 @@
-name: Deploy Docs
+name: publish site
 on:
   push:
     branches:
-      - main # Or 'master', depending on your default branch name
-
+      - main  # or master
+permissions:
+  contents: write
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    permissions:
-      pages: write
-      id-token: write
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-      - name: Setup Python
-        uses: actions/setup-python@v5
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
         with:
           python-version: 3.x
-      - name: Install dependencies
-        run: |
-          pip install mkdocs mkdocs-material # Add other plugins if needed in a requirements.txt
-      - name: Build and deploy
-        run: mkdocs gh-deploy --force --clean
+      - run: pip install mkdocs-material # or just 'mkdocs'
+      - run: mkdocs gh-deploy --force
